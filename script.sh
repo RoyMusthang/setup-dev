@@ -24,7 +24,6 @@ PROGRAMS_VIA_APT=(
   gparted
   gnome-tweak-tool
   git
-  gimp
   youtube-dl
   docker-ce 
   docker-ce-cli 
@@ -35,6 +34,7 @@ PROGRAMS_VIA_SNAP=(
   "code --classic"
   "spotify"
   "postman"
+  "slack --classic"
 )
 # ---------------------------------------------------------------------- #
 
@@ -101,16 +101,6 @@ sudo usermod -aG docker $USER
 newgrp docker
 sudo systemctl enable docker
 
-echo "==== Configura tema do zsh ===="
-curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -y
-
-echo "==== Personaliza GIMP ===="
-wget -c "https://github.com/Diolinux/PhotoGIMP/archive/master.zip" -P "$TEMP_PROGRAMS_DIRECTORY"
-unzip $TEMP_PROGRAMS_DIRECTORY/master.zip
-mv $HOME/.config/GIMP/2.10 $HOME/.config/GIMP/2.10bkp
-cp -r master/PhotoGIMP-master/.var/app/org.gimp.GIMP/config/GIMP/2.10 $HOME/.config/GIMP
-rm -rf master
-
 echo "==== Criando atalho para um arquivo em branco ===="
 mkdir $HOME/Templates
 touch $HOME/Templates/"blank file"
@@ -123,20 +113,6 @@ sudo apt autoclean
 sudo apt autoremove -y
 sudo rm -rf $TEMP_PROGRAMS_DIRECTORY
 # ---------------------------------------------------------------------- #
-
-
-read -p "==== Quer configurar o SSH? s/n ====" shh
-if [ "$shh" == "s" ] || [ "$shh" == "S" ]; then
-  read -p "==== Qual seu email? ====" EMAIL
-  read -p "==== Qual seu nome? ====" NAME
-  git config --global user.name $NAME
-  git config --global user.email $EMAIL
-  ssh-keygen -t rsa -b 4096 -C $EMAIL
-  eval "$(ssh-agent -s)"
-  ssh-add ~/.ssh/id_rsa
-fi
-echo "Sua chave publica:"
-cat ~/.ssh/id_rsa.pub
 
 # ----------------------------- FINISH --------------------------------- #
 echo "==== PARA O DOCKER FUNCIONAR SEM O SUDO BASTA REINICIAR ===="
